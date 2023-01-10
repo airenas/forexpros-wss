@@ -113,7 +113,7 @@ impl Stream {
 				} )
 				.and_then ( |(mut tx, mut rx)| async move {
 					// TODO: react to the server
-					tx.send ( format ! ( "[\"{{\\\"_event\\\":\\\"bulk-subscribe\\\",\\\"tzID\\\":\\\"8\\\",\\\"message\\\":\\\"pid-{}:\\\"}}\"]", &pair_msg ).into ( ) )
+					tx.send ( format ! ( "[\"{{\\\"_event\\\":\\\"bulk-subscribe\\\",\\\"tzID\\\":\\\"8\\\",\\\"message\\\":\\\"{}\\\"}}\"]", &pair_msg ).into ( ) )
 						.await
 						.expect ( "Expect tx.send(bulk-subscribe, tzID, pid) to server" )
 						;
@@ -193,8 +193,8 @@ impl Stream {
 
 
 fn prepare_pair_msg(pair_ids: String) -> String {
-	let split: Vec<String> = pair_ids.split(",").map(|s| format ! ("pid-{}", s.to_string())).collect();
-	let joined = split.join("::");
+	let split: Vec<String> = pair_ids.split(",").map(|s| format ! ("pid-{}:", s.to_string())).collect();
+	let joined = split.join("%%");
     return joined;
 }
 
@@ -287,7 +287,7 @@ mod tests {
 
 	#[test]
 	pub fn test_prepare_pair_msg ( ) {
-		assert_eq! ( prepare_pair_msg("1234".to_string()), "pid-1234");
-		assert_eq! ( prepare_pair_msg("olia,haha,1234".to_string()), "pid-olia::pid-haha::pid-1234");
+		assert_eq! ( prepare_pair_msg("1234".to_string()), "pid-1234:");
+		assert_eq! ( prepare_pair_msg("olia,haha,1234".to_string()), "pid-olia:%%pid-haha:%%pid-1234:");
 	}
 }
