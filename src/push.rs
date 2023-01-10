@@ -88,6 +88,7 @@ impl Stream {
 		let pair_id_str = pair_id.clone ( ).into_boxed_str ( );
 
 		let pair_msg = prepare_pair_msg(pair_id.clone());
+		// println!("using pairs str: {}", pair_msg);
 
 		// https://stackoverflow.com/questions/61752896/how-to-create-a-dedicated-threadpool-for-cpu-intensive-work-in-tokio
 		let rt_main = runtime::Runtime::new ( ).unwrap ( );
@@ -134,12 +135,13 @@ impl Stream {
 							}
 						} );
 					
-					let key = "\"message\":\"pid-".to_string();
+					let key = "\"message\\\":\\\"pid-".to_string();
 					let key = key.as_str ( );
 					
 					while let Some ( msg ) = rx.next ( ).await {
 						let msg = msg.unwrap ( );
 						let msg = msg.to_text ( ).unwrap ( );
+						// println!("got msg {}", msg);
 						if msg.contains ( key ) {
 							let stop = handler (
 								Snapshot::from_str (
