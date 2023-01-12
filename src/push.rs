@@ -99,6 +99,7 @@ impl Stream {
 			stream_handle_spawn: rt_main
 			.spawn ( async {
 				let url = generate_stream_url ( );
+				log::info!("URL: {}", url);
 				tokio_tungstenite::connect_async (
 					&url
 				)
@@ -204,12 +205,12 @@ fn prepare_pair_msg(pair_ids: String) -> String {
 pub fn generate_stream_url ( ) -> String {
 	let mut rnd = rand::thread_rng ( );
 
-	format ! ( "wss://stream2{:02}.forexpros.com/echo/{:03x}/{:08x}/websocket",
-		//1 + rnd.gen::<u16> ( ) % 280,
-		rnd.gen::<u8> ( ) % 100,
-		rnd.gen::<u16> ( ) % 0xfff,
-		rnd.gen::<u32> ( )
-	)
+	format ! ( "wss://streaming.forexpros.com/echo/{:03x}/{:08x}/websocket",
+	//1 + rnd.gen::<u16> ( ) % 280,
+	rnd.gen::<u8> ( ) % 100,
+	rnd.gen::<u16> ( ) % 0xfff,
+	// rnd.gen::<u32> ( )
+)
 }
 
 /*
@@ -284,7 +285,7 @@ mod tests {
 
 		let url = generate_stream_url();
 		
-		assert_eq! ( Regex::new ( r#"wss://stream\d+.forexpros.com/echo/[0-9a-zA-Z]{3}/[0-9a-zA-Z]{8}/websocket"# ).unwrap ( ).is_match ( url.as_str ( ) ), true, "Generated: {}", url );
+		assert_eq! ( Regex::new ( r#"wss://streaming.forexpros.com/echo/[0-9a-zA-Z]{3}/[0-9a-zA-Z]{8}/websocket"# ).unwrap ( ).is_match ( url.as_str ( ) ), true, "Generated: {}", url );
 	}
 
 	#[test]
