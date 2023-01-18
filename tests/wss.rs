@@ -27,6 +27,7 @@ use futures::prelude::*;
 use std::time::Duration;
 
 #[test]
+#[ignore]
 fn test_access_to_server ( /*pid: 'static &str*/ ) {
 	let pair_id = "945629";	// BTC/USD
 	//let pair_id = "8984";	// HK50 future

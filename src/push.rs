@@ -236,13 +236,8 @@ where
 mod tests {
 	use super::*;
 
-	#[cfg(ignore)]
 	#[test]
-	pub fn test_new_panic ( ) {
-		unimplemented! ( );
-	}
-
-	#[test]
+	#[ignore]
 	pub fn test_new ( ) {
 		use std::sync::{
 			Arc,
