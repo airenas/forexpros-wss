@@ -212,15 +212,12 @@ mod tests {
         assert_eq!(snapshot.turnover_numeric, 0);
     }
 
-	#[test]
-	#[should_panic(expected = "invalid digit found in string")]
-    pub fn test_no_turnover_err() {
-		let src = r#"{"pid":"945629","last_dir":"redBg","last_numeric":18951.2,"last":"18,951.2","bid":"18,954.0","ask":"18,956.0","high":"19,956.0","low":"18,279.0",
+    #[test]
+    #[should_panic(expected = "invalid digit found in string")]
+    pub fn test_turnover_err() {
+        let src = r#"{"pid":"945629","last_dir":"redBg","last_numeric":18951.2,"last":"18,951.2","bid":"18,954.0","ask":"18,956.0","high":"19,956.0","low":"18,279.0",
 		"last_close":"19,188.0","pc":"-236.8","pcp":"-1.23%","pc_col":"redFont","turnover":"21.50K",
 		"turnover_numeric":"olia","time":"19:21:50","timestamp":1606850510}"#;
-        let snapshot: Snapshot = serde_json::from_str(src).unwrap();
-
-        // assertions
-        assert_eq!(snapshot.turnover_numeric, 0);
+        _ = serde_json::from_str::<Snapshot>(src).unwrap();
     }
 }
